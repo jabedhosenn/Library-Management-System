@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+  
+{% block title %}Book Details{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+    <div class="alert alert-info">
+        {% for msg in messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="card mx-auto shadow-sm" style="max-width: 70rem;">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="book_image" style="height: 100%;">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.description }}</p>
+                    <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+                    <div class="mb-3">
+                        <strong>Category:</strong>
+                        {% for cat in book.category.all %}
+                        <span class="badge bg-warning text-dark me-1">{{ cat }}</span>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if user.is_authenticated %}
+                    <div class="mb-3">
+                        <form action="{% url 'submit_review' book.id %}" method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="review_body" class="form-label">Review:</label>
+                                <textarea id="review_body" name="review_body" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating:</label>
+                                <select id="rating" name="rating" class="form-control">
+                                    <option value="">Choose Rating</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-info">Submit Review</button>
+                        </form>
+                    </div>
+                    
+                    <div class="mb-3">
+                        {% if is_borrowed %}
+                        <button class="btn btn-danger" disabled>Already Borrowed</button>
+                        {% else %}
+                        <a href="{% url 'borrow_book' book.id %}" class="btn btn-success">Borrow</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <div>
+                        <h5>Reviews:</h5>
+                        {% for review in book.review.all %}
+                        <div class="border rounded p-2 mb-2">
+                            <strong>{{ review.user.username }}</strong> - {{ review.rating }} Stars
+                            <p>{{ review.body }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

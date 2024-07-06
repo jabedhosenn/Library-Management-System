@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+<title>{% block title %}Update Profile Page{% endblock title %}</title>
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+<form class="border border-2 p-5" style="width: 50%; margin:auto;" method="post" novalidate>
+    <h1 class="text-center ">Update your profile</h1>
+    <hr>
+    <a class="btn btn-danger btn-sm" href="{% url 'pass_change' %}">Change Your Password</a>
+    <br>
+    <br>
+    {% csrf_token %}
+    <!-- {{ form|crispy }} -->
+    {% for fm in form %}
+    {{fm.label_tag}}
+    {{fm}}
+    <p class="text-danger p-2">{{fm.errors|striptags}}</p>
+    {% endfor %}
+    <hr>
+    <button class="btn btn-warning text-white">Update Profile</button>
+</form>
+{% endblock content %}

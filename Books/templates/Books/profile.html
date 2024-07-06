@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}Profile Page{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary">Your Profile</h2>
+    <a class="btn btn-info" href="{% url 'edit_profile' %}">Edit your profile</a>
+  </div>
+  <hr>
+
+  {% for book in borrowed_books %}
+  <div class="card mb-4 shadow-sm">
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert alert-info">{{ msg }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ book.book.image.url }}" class="img-fluid rounded-start" alt="book_img">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.book.title }}</h5>
+          <p class="card-text"><strong>Price:</strong> ${{ book.book.price }}</p>
+          <p class="card-text"><strong>Borrowing Date:</strong> {{ book.borrow_date }}</p>
+          {% if book.return_date %}
+          <p class="card-text"><strong>Return Date:</strong> {{ book.return_date }}</p>
+          {% endif %}
+
+          <div class="mb-3">
+            <strong>Categories:</strong>
+            {% for cat in book.book.category.all %}
+            <span class="badge bg-warning text-dark">{{ cat }}</span>
+            {% endfor %}
+          </div>
+
+          <div>
+            {% for review in book.book.review.all %}
+            {% if review.user == user %}
+            <div class="border p-2 rounded mb-2">
+              <p class="mb-1"><strong>Your Review:</strong> {{ review.body }}</p>
+              <p class="mb-0"><strong>Rating:</strong> {{ review.rating }} Stars</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+
+          {% if user.is_authenticated %}
+          <div class="mt-3">
+            {% if book.return_date %}
+            <a class="btn btn-light disabled">Returned</a>
+            <a class="btn btn-danger" href="{% url 'delete_borrowed_book' book.id %}">Delete</a>
+            {% else %}
+            <a href="{% url 'return_book' book.book.id %}" class="btn btn-success">Return</a>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
