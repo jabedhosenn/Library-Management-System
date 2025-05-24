@@ -1,4 +1,4 @@
-# 📚 Library Management System
+# Library Management System
 
 A Django-based web application where users can view books, borrow and return them, deposit funds, and leave reviews. The system supports email notifications for deposits and borrow transactions, category-based filtering, and personal borrowing history tracking.
 
