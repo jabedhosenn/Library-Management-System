@@ -46,7 +46,7 @@ A Django-based web application where users can view books, borrow and return the
 ## Technology Stack
 
 - Backend: Django (Python)
-- Database: SQLite (or PostgreSQL)
+- Database: SQLite
 - Frontend: Django Templates + Bootstrap
 - Authentication: Django's built-in auth system
 - Email Backend: Django SMTP backend (Gmail)
@@ -75,6 +75,23 @@ library_management/
 
 ---
 
+## Getting Started
+
+### Prerequisites
+- Python 3.8 or later
+- pip
+- virtualenv (optional but recommended)
+
+### Installation
+
+git clone https://github.com/jabedhosenn/library-management-system.git
+cd library-management-system
+python -m venv env
+source env/bin/activate  # On Windows: env\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
+
 
 ## Create Superuser
 - python manage.py createsuperuser
@@ -100,4 +117,5 @@ library_management/
 - Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 
----
+
+
